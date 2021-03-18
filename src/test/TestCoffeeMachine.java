@@ -54,7 +54,7 @@ public class TestCoffeeMachine extends TestCase {
         HashMap<Ingredient, Integer> beverageRecipeFour = new HashMap<>();
         beverageRecipeFour.put(ingredient4, 1000);
         BeverageRecipe br4 = new BeverageRecipe(beverageRecipeFour);
-        Beverage b4 = new Beverage("black_tea", br1);
+        Beverage b4 = new Beverage("black_tea", br4);
 
         Menu menu = coffeeMachine.getMenu();
         coffeeMachine.addBeverage(b1);
