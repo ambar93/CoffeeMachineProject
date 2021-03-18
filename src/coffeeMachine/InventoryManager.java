@@ -35,9 +35,6 @@ public class InventoryManager {
                     throw new IngredientNotPresent("Ingredient not present " + ingredient.getName());
                 }
                 Integer maxQuantity = inventorMap.get(ingredient.getName());
-                System.out.println("ingredient name "+ ingredient.getName()+" max "+ maxQuantity);
-                System.out.println("ingredient name "+ ingredient.getName()+" qunatity "+ quantity);
-
                 if (maxQuantity < quantity)
                 {
                     throw new InsufficientIngredient("Insufficient ingredient "+ ingredient.getName()+ " for making beverage ");
@@ -54,6 +51,46 @@ public class InventoryManager {
                 Integer maxQuantity = inventorMap.get(ingredientName);
                 maxQuantity -=quantity;
                 inventorMap.put(ingredientName, maxQuantity);
+            }
+        }
+    }
+
+    public void showInventory()
+    {
+        Iterator<Map.Entry<String, Integer>> itr1 = inventorMap.entrySet().iterator();
+        while (itr1.hasNext() == true)
+        {
+            Map.Entry<String, Integer> pair = itr1.next();
+            String ingredient = pair.getKey();
+            Integer quantity = pair.getValue();
+
+            System.out.println(ingredient+ "  " + quantity);
+        }
+    }
+
+    public Map<String, Integer> getInventory()
+    {
+        return inventorMap;
+
+    }
+
+    public void refillInventory(HashMap<String, Integer> refillMap)
+    {
+        Iterator<Map.Entry<String, Integer>> itr1 = refillMap.entrySet().iterator();
+
+        while (itr1.hasNext() == true)
+        {
+            Map.Entry<String, Integer> pair = itr1.next();
+            String ingredient = pair.getKey();
+            Integer quantity = pair.getValue();
+            if (inventorMap.containsKey(ingredient) == true)
+            {
+                Integer initialQuantity = inventorMap.get(ingredient);
+                inventorMap.put(ingredient, initialQuantity + quantity);
+            }
+            else
+            {
+                inventorMap.put(ingredient, quantity);
             }
         }
     }

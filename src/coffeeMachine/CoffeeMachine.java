@@ -24,6 +24,11 @@ public class CoffeeMachine {
         menu.addNewBeverage(b);
     }
 
+    public InventoryManager getInventoryManager()
+    {
+        return this.inventoryManager;
+    }
+
     public Menu getMenu()
     {
         return this.menu;
