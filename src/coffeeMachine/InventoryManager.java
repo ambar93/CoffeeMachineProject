@@ -35,28 +35,26 @@ public class InventoryManager {
                     throw new IngredientNotPresent("Ingredient not present " + ingredient.getName());
                 }
                 Integer maxQuantity = inventorMap.get(ingredient.getName());
-                 if (maxQuantity < quantity)
+                System.out.println("ingredient name "+ ingredient.getName()+" max "+ maxQuantity);
+                System.out.println("ingredient name "+ ingredient.getName()+" qunatity "+ quantity);
+
+                if (maxQuantity < quantity)
                 {
                     throw new InsufficientIngredient("Insufficient ingredient "+ ingredient.getName()+ " for making beverage ");
                 }
             }
-            updateIngredients(ingredientMap);
-        }
+            Iterator<Map.Entry<Ingredient, Integer>> itr2 = ingredientMap.entrySet().iterator();
 
-    }
-
-    public static void updateIngredients(Map<Ingredient, Integer> ingredients)
-    {
-        Iterator<Map.Entry<Ingredient, Integer>> itr1 = ingredients.entrySet().iterator();
-        while (itr1.hasNext() == true)
-        {
-            Map.Entry<Ingredient, Integer> pair = itr1.next();
-            Ingredient ingredient = pair.getKey();
-            Integer quantity = pair.getValue();
-            String ingredientName = ingredient.getName();
-            Integer maxQuantity = inventorMap.get(ingredientName);
-            maxQuantity -=quantity;
-            inventorMap.put(ingredientName, maxQuantity);
+            while (itr2.hasNext() == true)
+            {
+                Map.Entry<Ingredient, Integer> pair = itr2.next();
+                Ingredient ingredient = pair.getKey();
+                Integer quantity = pair.getValue();
+                String ingredientName = ingredient.getName();
+                Integer maxQuantity = inventorMap.get(ingredientName);
+                maxQuantity -=quantity;
+                inventorMap.put(ingredientName, maxQuantity);
+            }
         }
     }
 }
