@@ -21,7 +21,7 @@ public class InventoryManager {
         inventorMap.put(ingredientName, quantity);
     }
 
-    public static void consumeIngredients(Map<Ingredient, Integer> ingredientMap)  {
+    public static void consumeIngredients(Map<Ingredient, Integer> ingredientMap) throws IngredientNotPresent, InsufficientIngredient {
         synchronized (inventorMap)
         {
             Iterator<Map.Entry<Ingredient, Integer>> itr1 = ingredientMap.entrySet().iterator();
@@ -30,11 +30,14 @@ public class InventoryManager {
                 Map.Entry<Ingredient, Integer> pair = itr1.next();
                 Ingredient ingredient = pair.getKey();
                 Integer quantity = pair.getValue();
-                Integer maxQuantity = inventorMap.get(ingredient.getName());
-
-                if (maxQuantity < quantity)
+                if(inventorMap.containsKey(ingredient.getName()) == false)
                 {
-                    // throw exception
+                    throw new IngredientNotPresent("Ingredient not present " + ingredient.getName());
+                }
+                Integer maxQuantity = inventorMap.get(ingredient.getName());
+                 if (maxQuantity < quantity)
+                {
+                    throw new InsufficientIngredient("Insufficient ingredient "+ ingredient.getName()+ " for making beverage ");
                 }
             }
             updateIngredients(ingredientMap);
