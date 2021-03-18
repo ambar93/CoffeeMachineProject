@@ -87,9 +87,38 @@ public class TestCoffeeMachine extends TestCase {
     }
 
     @Test
-    public void testCoffeeMachineFailureDueToInsufficientIngredients()
-    {
+    public void testCoffeeMachineFailureDueToInsufficientIngredients() throws InterruptedException {
+        Map<String, Integer>  initialInventory = coffeeMachine.getInventoryManager().getInventory();
+        assertEquals((Object) initialInventory.get("hot_water"), 5000);
+        assertEquals((Object) initialInventory.get("ginger_syrup"), 5000);
+        assertEquals((Object) initialInventory.get("sugar_syrup"), 5000);
+        assertEquals((Object) initialInventory.get("tea_leaves_syrup"), 5000);
+        assertEquals((Object) initialInventory.get("hot_milk"), 5000);
 
+        // This beverage will not be prepared due to insufficient ingredient
+        Ingredient ingredient1 = new Ingredient("hot_water");
+        Ingredient ingredient2 = new Ingredient("ginger_syrup");
+        Ingredient ingredient3 = new Ingredient("sugar_syrup");
+        HashMap<Ingredient, Integer> beverageRecipeFive = new HashMap<>();
+        beverageRecipeFive.put(ingredient1, 400000);
+        beverageRecipeFive.put(ingredient2, 400000);
+        beverageRecipeFive.put(ingredient3, 400000);
+
+        BeverageRecipe br5 = new BeverageRecipe(beverageRecipeFive);
+        Beverage b5 = new Beverage("hot_ginger_tea", br5);
+
+        coffeeMachine.addBeverage(b5);
+        coffeeMachine.prepareBeverage();
+
+        Thread.sleep(3000);
+
+        Map<String, Integer>  finalInventory = coffeeMachine.getInventoryManager().getInventory();
+
+        assertEquals((Object) finalInventory.get("hot_water"), 1000);
+        assertEquals((Object) finalInventory.get("ginger_syrup"), 4000);
+        assertEquals((Object) finalInventory.get("sugar_syrup"), 4000);
+        assertEquals((Object) finalInventory.get("tea_leaves_syrup"), 3000);
+        assertEquals((Object) finalInventory.get("hot_milk"), 4000);
     }
 
     public void tearDown() {
