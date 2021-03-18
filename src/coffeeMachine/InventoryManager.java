@@ -13,12 +13,47 @@ public class InventoryManager {
 
     InventoryManager()
     {
-        // multiple threads will update this map
         inventorMap = Collections.synchronizedMap(new HashMap<>());
     }
 
     public void addIngredients(String ingredientName, Integer quantity)
     {
         inventorMap.put(ingredientName, quantity);
+    }
+
+    public static void consumeIngredients(Map<Ingredient, Integer> ingredientMap)  {
+        synchronized (inventorMap)
+        {
+            Iterator<Map.Entry<Ingredient, Integer>> itr1 = ingredientMap.entrySet().iterator();
+            while (itr1.hasNext() == true)
+            {
+                Map.Entry<Ingredient, Integer> pair = itr1.next();
+                Ingredient ingredient = pair.getKey();
+                Integer quantity = pair.getValue();
+                Integer maxQuantity = inventorMap.get(ingredient.getName());
+
+                if (maxQuantity < quantity)
+                {
+                    // throw exception
+                }
+            }
+            updateIngredients(ingredientMap);
+        }
+
+    }
+
+    public static void updateIngredients(Map<Ingredient, Integer> ingredients)
+    {
+        Iterator<Map.Entry<Ingredient, Integer>> itr1 = ingredients.entrySet().iterator();
+        while (itr1.hasNext() == true)
+        {
+            Map.Entry<Ingredient, Integer> pair = itr1.next();
+            Ingredient ingredient = pair.getKey();
+            Integer quantity = pair.getValue();
+            String ingredientName = ingredient.getName();
+            Integer maxQuantity = inventorMap.get(ingredientName);
+            maxQuantity -=quantity;
+            inventorMap.put(ingredientName, maxQuantity);
+        }
     }
 }
