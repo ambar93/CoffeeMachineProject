@@ -21,6 +21,10 @@ public class InventoryManager {
         inventorMap.put(ingredientName, quantity);
     }
 
+    /**
+     * This method consumes ingredients. There will be N(=outlets) threads running parallely
+     * trying to update the ingredient map. Synchronizing will keep the operations atomic
+     */
     public static void consumeIngredients(Map<Ingredient, Integer> ingredientMap) throws IngredientNotPresent, InsufficientIngredient {
         synchronized (inventorMap)
         {
@@ -55,6 +59,9 @@ public class InventoryManager {
         }
     }
 
+    /**
+     * This method lists down the inventory
+     */
     public void showInventory()
     {
         Iterator<Map.Entry<String, Integer>> itr1 = inventorMap.entrySet().iterator();
@@ -74,6 +81,9 @@ public class InventoryManager {
 
     }
 
+    /**
+     * This method lists adds more inventory
+     */
     public void refillInventory(HashMap<String, Integer> refillMap)
     {
         Iterator<Map.Entry<String, Integer>> itr1 = refillMap.entrySet().iterator();

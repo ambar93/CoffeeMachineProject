@@ -12,7 +12,6 @@ public class Menu {
     }
     // can have additional features like cost of each beverage.
 
-
     public void addNewBeverage(Beverage b)
     {
         if (beverageList.contains(b) == false)
